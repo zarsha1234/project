@@ -35,4 +35,30 @@ defmodule TodoWeb.ConnCase do
     Todo.DataCase.setup_sandbox(tags)
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
+
+  @doc """
+  Setup helper that registers and logs in path.
+
+      setup :register_and_log_in_path
+
+  It stores an updated connection and a registered path in the
+  test context.
+  """
+  def register_and_log_in_path(%{conn: conn}) do
+    path = Todo.RouteFixtures.path_fixture()
+    %{conn: log_in_path(conn, path), path: path}
+  end
+
+  @doc """
+  Logs the given `path` into the `conn`.
+
+  It returns an updated `conn`.
+  """
+  def log_in_path(conn, path) do
+    token = Todo.Route.generate_path_session_token(path)
+
+    conn
+    |> Phoenix.ConnTest.init_test_session(%{})
+    |> Plug.Conn.put_session(:path_token, token)
+  end
 end
