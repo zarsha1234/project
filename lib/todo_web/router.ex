@@ -27,6 +27,7 @@ defmodule TodoWeb.Router do
 
     live "/users/:id", UserLive.Show, :show
     live "/users/:id/show/edit", UserLive.Show, :edit
+    live "/chat", ChatLive.Index
 
 
   end
@@ -54,7 +55,7 @@ defmodule TodoWeb.Router do
       live_dashboard "/dashboard", metrics: TodoWeb.Telemetry
       forward "/mailbox", Plug.Swoosh.MailboxPreview
     end
-  
+
   ## Authentication routes
 
   scope "/", TodoWeb do
