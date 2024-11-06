@@ -42,3 +42,12 @@ liveSocket.connect()
 // >> liveSocket.disableLatencySim()
 window.liveSocket = liveSocket
 
+app.get('/api', (req, res) => {
+  const keyword = req.query.keyword
+  res.json(handleSearch(keyword))
+})
+
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
+});
+

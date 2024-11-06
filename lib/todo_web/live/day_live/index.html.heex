@@ -1,0 +1,49 @@
+<.header>
+  Listing Days
+  <:actions>
+    <.link patch={~p"/days/new"}>
+      <.button>New Day</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<div class="search-bar">
+  <.form phx-change="search"> <!-- Use phx-change for real-time search -->
+    <input type="text" name="keyword" placeholder="Search days..." value={@search_keyword} />
+    <.button type="submit">Search</.button>
+  </.form>
+</div>
+ 
+<.table
+  id="days"
+  rows={@days}
+ row_click={fn day -> JS.navigate(~p"/days/#{(day)}") end} >
+>
+  <:col :let={ day} label="Names"><%= day.names %></:col>
+  <:col :let={ day} label="Weather"><%= day.weather %></:col>
+  <:action :let={day}>
+    <div class="sr-only">
+     <.link navigate={~p"/days/#{day}"}>Show</.link>
+    </div>
+    <.link patch={~p"/days/#{day}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={day}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: day.id}) |> hide("##{day.id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="day-modal" show on_cancel={JS.patch(~p"/days")}>
+  <.live_component
+    module={TodoWeb.DayLive.FormComponent}
+    id={@day.id || :new}
+    title={@page_title}
+    action={@live_action}
+    day={@day}
+    patch={~p"/days"}
+  />
+</.modal>

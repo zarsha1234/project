@@ -20,17 +20,35 @@ defmodule TodoWeb.Router do
   scope "/", TodoWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
+    get "/home", PageController, :home
+
     live "/users", UserLive.Index, :index
     live "/users/new", UserLive.Index, :new
     live "/users/:id/edit", UserLive.Index, :edit
-
     live "/users/:id", UserLive.Show, :show
     live "/users/:id/show/edit", UserLive.Show, :edit
     live "/chat", ChatLive.Index
+    live "/todos", TodoLive, :index
+    live "/candy", CandyLive, :index
+    live "/days", DayLive.Index, :index
+    live "/days/new", DayLive.Index, :new
+    live "/days/:id/edit", DayLive.Index, :edit
+
+    live "/days/:id", DayLive.Show, :show
+    live "/days/:id/show/edit", DayLive.Show, :edit
+    live "/gallerys", GalleryLive.Index, :index
+    live "/gallerys/new", GalleryLive.Index, :new
+    live "/gallerys/:id/edit", GalleryLive.Index, :edit
+
+    live "/gallerys/:id", GalleryLive.Show, :show
+    live "/gallerys/:id/show/edit", GalleryLive.Show, :edit
+
 
 
   end
+
+
+
 
   # Other scopes may use custom stacks.
   #scope "/dev", TodoWeb do
@@ -67,6 +85,8 @@ defmodule TodoWeb.Router do
       live "/path/log_in", PathLoginLive, :new
       live "/path/reset_password", PathForgotPasswordLive, :new
       live "/path/reset_password/:token", PathResetPasswordLive, :edit
+
+
     end
 
     post "/path/log_in", PathSessionController, :create

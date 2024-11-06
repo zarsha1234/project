@@ -34,6 +34,7 @@ defmodule Todo.MixProject do
     [
       {:bcrypt_elixir, "~> 3.0"},
       {:tzdata, "~> 1.1"},
+      {:tailwind, "~> 0.1.5"},
       {:phoenix, "~> 1.7.14"},
       {:phoenix_ecto, "~> 4.5"},
       {:ecto_sql, "~> 3.10"},
@@ -45,7 +46,6 @@ defmodule Todo.MixProject do
       {:floki, ">= 0.30.0", only: :test},
       {:phoenix_live_dashboard, "~> 0.8.3"},
       {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
-      {:tailwind, "~> 0.2", runtime: Mix.env() == :dev},
       {:heroicons,
        github: "tailwindlabs/heroicons",
        tag: "v2.1.1",

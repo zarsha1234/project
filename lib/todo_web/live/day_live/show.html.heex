@@ -1,0 +1,27 @@
+<.header>
+  Day <%= @day.id %>
+  <:subtitle>This is a day record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/days/#{@day}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit day</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Names"><%= @day.names %></:item>
+  <:item title="Weather"><%= @day.weather %></:item>
+</.list>
+
+<.back navigate={~p"/days"}>Back to days</.back>
+
+<.modal :if={@live_action == :edit} id="day-modal" show on_cancel={JS.patch(~p"/days/#{@day}")}>
+  <.live_component
+    module={TodoWeb.DayLive.FormComponent}
+    id={@day.id}
+    title={@page_title}
+    action={@live_action}
+    day={@day}
+    patch={~p"/days/#{@day}"}
+  />
+</.modal>

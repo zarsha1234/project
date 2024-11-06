@@ -1,12 +1,12 @@
 <div>
-  <h1>ChatLive</h1>
-  <div class="messages" style="border: 1px solid #eee; height: 400px; overflow: scroll; margin-bottom: 8px;">
+  <h1>shokae</h1>
+  <div class="messages" style="background-color: brown; border: 1px solid #eee; height: 200px; overflow: scroll; margin-upward: 8px;">
     <%= for m <- @messages do %>
-      <p style="margin: 2px;"><b><%= m.name %></b>: <%= m.text %></p>
+      <p style="margin: 9px;"><b><%= m.name %></b>: <%= m.text %></p>
     <% end %>
   </div>
   <form phx-submit="send">
     <input type="text" name="text" />
-    <button type="submit">Send</button>
+    <button type="submit">ok</button>
   </form>
-</div>
+</div> 

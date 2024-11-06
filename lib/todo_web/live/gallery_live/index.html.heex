@@ -1,0 +1,46 @@
+<.header>
+  Listing Gallerys
+  <:actions>
+    <.link patch={~p"/gallerys/new"}>
+      <.button>New Gallery</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="gallerys"
+  rows={@streams.gallerys}
+  row_click={fn {_id, gallery} -> JS.navigate(~p"/gallerys/#{gallery}") end}
+>
+  <:col :let={{_id, gallery}} label="Name"><%= gallery.name %></:col>
+   <:col :let={{ id, gallery}} label="Image"> <img
+          src={gallery.image}
+          alt="art image"
+           class="w-32 h-24 object-contain"
+            /></:col>
+  <:action :let={{_id, gallery}}>
+    <div class="sr-only">
+      <.link navigate={~p"/gallerys/#{gallery}"}>Show</.link>
+    </div>
+    <.link patch={~p"/gallerys/#{gallery}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, gallery}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: gallery.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="gallery-modal" show on_cancel={JS.patch(~p"/gallerys")}>
+  <.live_component
+    module={TodoWeb.GalleryLive.FormComponent}
+    id={@gallery.id || :new}
+    title={@page_title}
+    action={@live_action}
+    gallery={@gallery}
+    patch={~p"/gallerys"}
+  />
+</.modal>
