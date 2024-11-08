@@ -1,0 +1,63 @@
+<.header>
+  Listing Messages
+  <:actions>
+    <.link patch={~p"/messages/new"}>
+      <.button>New</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="messages"
+  rows={@messages}
+  row_click={fn {such} -> JS.navigate(~p"/messages/#{such}") end}
+>
+  <:col :let={such} label="Name"><%= such.name %></:col>
+  <:col :let={ such} label="Content"><%= such.content %></:col>
+  <:action :let={such}>
+    <div class="sr-only">
+      <.link navigate={~p"/messages/#{such}"}>Show</.link>
+    </div>
+    <.link patch={~p"/messages/#{such}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={such}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: such.id}) |> hide("##{such}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<div id="chat-container">
+  <div id="messages">
+    <%= for message <- @messages do %>
+      <p><strong><%= message.name %>:</strong> <%= message.content %></p>
+    <% end %>
+  </div> 
+
+  <div id="message-form">
+  <form phx-submit="send_message" phx-change="validate_message">
+  <label for="message-name-input">Name:</label>
+  <input type="text" name="message[name]" value={@name} placeholder="Enter your name" id="message-name-input" />
+  <label for="message-content-textarea">Message:</label>
+  <textarea name="message[content]" placeholder="Enter your message" required id="message-content-textarea"></textarea>
+  <button type="submit">Send</button>
+</form>
+
+  </div>
+</div>
+
+
+
+<.modal :if={@live_action in [:new, :edit]} id="such-modal" show on_cancel={JS.patch(~p"/messages")}>
+  <.live_component
+    module={TodoWeb.SuchLive.FormComponent}
+    id={@such.id || :new}
+    title={@page_title}
+    action={@live_action}
+    such={@such}
+    patch={~p"/messages"}
+  />
+</.modal>

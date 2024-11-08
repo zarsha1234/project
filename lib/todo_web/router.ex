@@ -43,6 +43,14 @@ defmodule TodoWeb.Router do
     live "/gallerys/:id", GalleryLive.Show, :show
     live "/gallerys/:id/show/edit", GalleryLive.Show, :edit
 
+    live "/messages", SuchLive.Index, :index
+    live "/messages/new", SuchLive.Index, :new
+    live "/messages/:id/edit", SuchLive.Index, :edit
+
+    live "/messages/:id", SuchLive.Show, :show
+    live "/messages/:id/show/edit", SuchLive.Show, :edit
+
+
 
 
   end

@@ -2,7 +2,7 @@ defmodule TodoWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :todo
 
   # The session will be stored in the cookie and signed,
-  # this means its contents can be read but not tampered with.
+  # meaning its contents can be read but not tampered with.
   # Set :encryption_salt if you would also like to encrypt it.
   @session_options [
     store: :cookie,
@@ -11,22 +11,22 @@ defmodule TodoWeb.Endpoint do
     same_site: "Lax"
   ]
 
+  # Configure the LiveView socket with session options
   socket "/live", Phoenix.LiveView.Socket,
     websocket: [connect_info: [session: @session_options]],
-    longpoll: [connect_info: [session: @session_options]]
+    longpoll: [connect_info: [session: @session_options]],
+    pubsub_server: Todo.PubSub
 
-  # Serve at "/" the static files from "priv/static" directory.
-  #
-  # You should set gzip to true if you are running phx.digest
-  # when deploying your static files in production.
+
+
+  # Serve static files from the "priv/static" directory at "/"
   plug Plug.Static,
     at: "/",
     from: :todo,
     gzip: false,
     only: TodoWeb.static_paths()
 
-  # Code reloading can be explicitly enabled under the
-  # :code_reloader configuration of your endpoint.
+  # Enable code reloading if configured for development
   if code_reloading? do
     socket "/phoenix/live_reload/socket", Phoenix.LiveReloader.Socket
     plug Phoenix.LiveReloader
@@ -34,6 +34,7 @@ defmodule TodoWeb.Endpoint do
     plug Phoenix.Ecto.CheckRepoStatus, otp_app: :todo
   end
 
+  # Request logging setup for LiveDashboard
   plug Phoenix.LiveDashboard.RequestLogger,
     param_key: "request_logger",
     cookie_key: "request_logger"
@@ -41,6 +42,7 @@ defmodule TodoWeb.Endpoint do
   plug Plug.RequestId
   plug Plug.Telemetry, event_prefix: [:phoenix, :endpoint]
 
+  # Configure parsers for handling requests
   plug Plug.Parsers,
     parsers: [:urlencoded, :multipart, :json],
     pass: ["*/*"],
@@ -48,6 +50,10 @@ defmodule TodoWeb.Endpoint do
 
   plug Plug.MethodOverride
   plug Plug.Head
+
+  # Configure session storage
   plug Plug.Session, @session_options
+
+  # Use the application router
   plug TodoWeb.Router
 end
